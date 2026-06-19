@@ -8,12 +8,12 @@ import { User } from "@/types/user";
 !fetchNoteById
 !createNote
 !deleteNote
-register
-login
-logout
-checkSession
-getMe
-updateMe
+!register
+!login
+!logout
+!checkSession
+!getMe
+!updateMe
 */
 export const fetchNotes = async (
   query: string,
@@ -41,11 +41,48 @@ export const deleteNote = async (id: Note["id"]): Promise<Note> => {
   const { data } = await api.delete<Note>(`/notes/${id}`);
   return data;
 };
-export interface RegisterRequest {
+export interface RegisterUserData {
   email: string;
   password: string;
 }
-export const register = async (userData: RegisterRequest): Promise<User> => {
+export const register = async (userData: RegisterUserData): Promise<User> => {
   const { data } = await api.post<User>("/auth/register", userData);
+  return data;
+};
+export interface LoginUserData {
+  email: string;
+  password: string;
+}
+export const login = async (loginData: LoginUserData) => {
+  const { data } = await api.post<User>("/auth/login", loginData);
+  return data;
+};
+
+interface CheckSessionRequest {
+  success: boolean;
+}
+export const checkSession = async (): Promise<boolean> => {
+  try {
+    const res = await api.get<CheckSessionRequest>("/auth/session");
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+};
+
+export const getMe = async () => {
+  const { data } = await api.get<User>("users/me");
+  return data;
+};
+
+export const logout = async (): Promise<void> => {
+  await api.post("/auth/logout");
+};
+
+export interface UpdateUserRequest {
+  username: string;
+}
+export const updateMe = async (payload: UpdateUserRequest) => {
+  const {data} = await api.put<User>("users/me", payload);
   return data;
 };

@@ -1,17 +1,22 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import css from "./ProfilePage.module.css";
-import { Metadata } from "next";
+// import { Metadata } from "next";
+import { useAuthStore } from "@/lib/store/authStore";
 
-export const metadata: Metadata = {
-  title: "",
-  description: "",
-  openGraph: {
-    title: "",
-    description: "",
-  },
-};
+
+// export const metadata: Metadata = {
+//   title: "",
+//   description: "",
+//   openGraph: {
+//     title: "",
+//     description: "",
+//   },
+// };
+
 const ProfilePage = () => {
+  const user = useAuthStore((state) => state.user)
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
@@ -23,7 +28,7 @@ const ProfilePage = () => {
         </div>
         <div className={css.avatarWrapper}>
           <Image
-            src="Avatar"
+            src={user?.avatar || 'default/avatar.png'}
             alt="User Avatar"
             width={120}
             height={120}

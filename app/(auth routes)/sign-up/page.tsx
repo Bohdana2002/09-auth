@@ -1,18 +1,31 @@
 "use client";
 import { useRouter } from "next/navigation";
 import css from "./SignUpPage.module.css";
-import { register } from "@/lib/api/clientApi";
+import { register, RegisterUserData } from "@/lib/api/clientApi";
+import { useState } from "react";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const SignUpPage = () => {
   const router = useRouter();
+  const [isError, setIsError] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (formData: FormData) => {
-    const body = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
-    const res = await register(body);
-    router.push("/profile");
+    try {
+      const formValues = Object.fromEntries(
+        formData,
+      ) as unknown as RegisterUserData;
+      const res = await register(formValues);
+      if (res) {
+        setUser(res);
+        router.push("/profile");
+      } else {
+        setIsError(true);
+      }
+    } catch {
+      setIsError(true);
+    }
   };
+
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
