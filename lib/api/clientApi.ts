@@ -1,5 +1,4 @@
-import { Note, NoteData } from "@/types/note";
-import { NoteResponse } from "../api";
+import { Note, NoteData, NoteResponse } from "@/types/note";
 import { api } from "./api";
 import { User } from "@/types/user";
 

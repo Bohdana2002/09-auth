@@ -1,3 +1,8 @@
+export interface NoteResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
 export interface Note {
   id: string;
   title: string;

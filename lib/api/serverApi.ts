@@ -1,7 +1,6 @@
 import { User } from "@/types/user";
-import { NoteResponse } from "../api";
 import { api } from "./api";
-import { Note } from "@/types/note";
+import { Note, NoteResponse } from "@/types/note";
 import { cookies } from "next/headers";
 
 export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
