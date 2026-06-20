@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, LoginUserData } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
+import { toast } from "sonner";
 
 const SignInPage = () => {
   const router = useRouter();
-  const [isError, setIsError] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
@@ -20,10 +20,10 @@ const SignInPage = () => {
         setUser(res);
         router.push("/profile");
       } else {
-        setIsError(true);
+        toast.error("Ooops.. Check your email or password");
       }
     } catch {
-      setIsError(true);
+      toast.error("Ooops.. Check your email or password");
     }
   };
   return (
@@ -55,7 +55,6 @@ const SignInPage = () => {
             Log in
           </button>
         </div>
-        <p className={css.error}>If the password or email is incorrect!!!</p>
       </form>
     </main>
   );

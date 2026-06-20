@@ -47,5 +47,3 @@ export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
   });
   return data;
 };
-
-

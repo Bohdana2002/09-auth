@@ -2,14 +2,24 @@
 import { useRouter } from "next/navigation";
 import css from "./SignUpPage.module.css";
 import { register, RegisterUserData } from "@/lib/api/clientApi";
-import { useState } from "react";
 import { useAuthStore } from "@/lib/store/authStore";
+import { toast } from "sonner";
 
 const SignUpPage = () => {
   const router = useRouter();
-  const [isError, setIsError] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (formData: FormData) => {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email || !password) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
     try {
       const formValues = Object.fromEntries(
         formData,
@@ -19,10 +29,10 @@ const SignUpPage = () => {
         setUser(res);
         router.push("/profile");
       } else {
-        setIsError(true);
+        toast.error("Something is wrong");
       }
     } catch {
-      setIsError(true);
+      toast.error("Something is wrong");
     }
   };
 
@@ -48,6 +58,7 @@ const SignUpPage = () => {
             name="password"
             className={css.input}
             required
+            minLength={6}
           />
         </div>
         <div className={css.actions}>
@@ -55,7 +66,6 @@ const SignUpPage = () => {
             Register
           </button>
         </div>
-        <p className={css.error}>Error</p>
       </form>
     </main>
   );

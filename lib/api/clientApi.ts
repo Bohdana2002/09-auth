@@ -3,18 +3,6 @@ import { NoteResponse } from "../api";
 import { api } from "./api";
 import { User } from "@/types/user";
 
-/* 
-!fetchNotes
-!fetchNoteById
-!createNote
-!deleteNote
-!register
-!login
-!logout
-!checkSession
-!getMe
-!updateMe
-*/
 export const fetchNotes = async (
   query: string,
   page: number,
@@ -64,7 +52,7 @@ interface CheckSessionRequest {
 export const checkSession = async (): Promise<boolean> => {
   try {
     const res = await api.get<CheckSessionRequest>("/auth/session");
-    return res.status === 200;
+    return res.data.success;
   } catch {
     return false;
   }
@@ -83,6 +71,6 @@ export interface UpdateUserRequest {
   username: string;
 }
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const {data} = await api.put<User>("users/me", payload);
+  const { data } = await api.put<User>("users/me", payload);
   return data;
 };

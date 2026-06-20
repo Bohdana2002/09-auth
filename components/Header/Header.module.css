@@ -1,3 +1,7 @@
+.navigationItem {
+    display: flex;
+    align-items: center;
+}
 .header {
     display: flex;
     justify-content: space-between;

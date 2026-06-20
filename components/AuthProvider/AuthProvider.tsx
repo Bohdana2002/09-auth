@@ -3,8 +3,8 @@
 import { checkSession, getMe } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useEffect, useState } from "react";
-import Loader from "../Loader/Loader";
 import { usePathname } from "next/navigation";
+import Loading from "@/app/loading";
 
 interface Props {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: Props) => {
     };
     fetchUser();
   }, [setUser, clearIsAuthenticated, pathname]);
-  if (loading) return <Loader />;
+  if (loading) return <Loading />;
   return children;
 };
 
