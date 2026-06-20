@@ -40,7 +40,7 @@ export interface LoginUserData {
   email: string;
   password: string;
 }
-export const login = async (loginData: LoginUserData) => {
+export const login = async (loginData: LoginUserData): Promise<User> => {
   const { data } = await api.post<User>("/auth/login", loginData);
   return data;
 };
@@ -57,8 +57,8 @@ export const checkSession = async (): Promise<boolean> => {
   }
 };
 
-export const getMe = async () => {
-  const { data } = await api.get<User>("users/me");
+export const getMe = async (): Promise<User> => {
+  const { data } = await api.get<User>("/users/me");
   return data;
 };
 
@@ -69,7 +69,7 @@ export const logout = async (): Promise<void> => {
 export interface UpdateUserRequest {
   username: string;
 }
-export const updateMe = async (payload: UpdateUserRequest) => {
-  const { data } = await api.put<User>("users/me", payload);
+export const updateMe = async (payload: UpdateUserRequest): Promise<User> => {
+  const { data } = await api.patch<User>("/users/me", payload);
   return data;
 };

@@ -4,7 +4,12 @@ import { Note, NoteResponse } from "@/types/note";
 import { cookies } from "next/headers";
 
 export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
-  const { data } = await api.get<Note>(`/notes/${noteId}`);
+  const cookieStore = await cookies();
+  const { data } = await api.get<Note>(`/notes/${noteId}`, {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
   return data;
 };
 export const fetchNotes = async (
@@ -13,13 +18,22 @@ export const fetchNotes = async (
   perPage: number,
   tag?: string,
 ): Promise<NoteResponse> => {
+  const cookieStore = await cookies();
   const { data } = await api.get<NoteResponse>("/notes", {
     params: { search: query, page, perPage, tag },
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
   });
   return data;
 };
-export const getMe = async () => {
-  const { data } = await api.get<User>("users/me");
+export const getMe = async (): Promise<User> => {
+  const cookieStore = await cookies();
+  const { data } = await api.get<User>("/users/me", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
   return data;
 };
 
